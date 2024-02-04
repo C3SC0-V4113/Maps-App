@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { MapsApp } from "./MapsApp";
+import "./styles.css";
 
 if (!navigator.geolocation) {
   alert("Tu navegador no tiene acceso a la geolocalización");
