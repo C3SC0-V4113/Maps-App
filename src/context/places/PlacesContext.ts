@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { Feature } from "../../interfaces/places";
 
 export interface PlacesContextProps {
   /** Properties */
@@ -6,7 +7,7 @@ export interface PlacesContextProps {
   userLocation?: [number, number];
 
   /** Methods */
-  searchPlacesByTerm: (query: string) => Promise<never[] | undefined>;
+  searchPlacesByTerm: (query: string) => Promise<Feature[]>;
 }
 
 export const PlacesContext = createContext<PlacesContextProps>(
