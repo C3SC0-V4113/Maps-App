@@ -3,8 +3,8 @@ import { MapContext, PlacesContext } from "../context";
 import { Feature } from "../interfaces/places";
 
 const SearchResults = () => {
-  const { places, isLoadingPlaces } = useContext(PlacesContext);
-  const { map } = useContext(MapContext);
+  const { places, isLoadingPlaces, userLocation } = useContext(PlacesContext);
+  const { map, getRouteBeteenPoints } = useContext(MapContext);
 
   const [activeId, setActiveId] = useState("");
 
@@ -15,6 +15,12 @@ const SearchResults = () => {
       zoom: 14,
       center: [lng, lat],
     });
+  };
+
+  const getRoute = (place: Feature) => {
+    if (!userLocation) return;
+    const [lng, lat] = place.center;
+    getRouteBeteenPoints(userLocation, [lng, lat]);
   };
 
   if (isLoadingPlaces)
@@ -40,6 +46,7 @@ const SearchResults = () => {
           <h6>{place.text_es}</h6>
           <p style={{ fontSize: 12 }}>{place.place_name}</p>
           <button
+            onClick={() => getRoute(place)}
             className={`btn btn-outline-${
               activeId === place.id ? "light" : "primary"
             } btn-sm`}

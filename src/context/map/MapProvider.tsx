@@ -3,6 +3,8 @@ import { mapReducer } from "./mapReducer";
 import { MapContext } from "./MapContext";
 import { Map, Marker, Popup } from "mapbox-gl";
 import { PlacesContext } from "..";
+import { directionsApi } from "../../apis";
+import { DirectionsResponse } from "../../interfaces/directions";
 
 export interface MapState {
   isMapReady: boolean;
@@ -65,7 +67,20 @@ export const MapProvider = ({ children }: Props) => {
   const getRouteBeteenPoints = async (
     start: [number, number],
     end: [number, number]
-  ) => {};
+  ) => {
+    const resp = await directionsApi.get<DirectionsResponse>(
+      `/${start.join(",")};${end.join(",")}`
+    );
+
+    const { distance, duration, geometry } = resp.data.routes[0];
+    let kms = distance / 1000;
+    kms = Math.round(kms * 1000);
+    kms /= 100;
+
+    const minutes = Math.floor(duration / 60);
+
+    console.log(kms, minutes);
+  };
 
   return (
     <MapContext.Provider
